@@ -1,4 +1,6 @@
 /**
+ * **Demo fixture only — no cryptographic JWT verification.** Do not use in production.
+ *
  * Decoded claims from a signed JWT used at API boundaries.
  */
 export interface JwtClaims {

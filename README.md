@@ -2,6 +2,8 @@
 
 Demo target TypeScript monorepo for exercising Agent86 cross-file rename recovery.
 
+**Security:** Crypto and auth helpers here are **stubs for demos only** — see [SECURITY.md](./SECURITY.md).
+
 Upstream project: [github.com/j-srodka/agent86](https://github.com/j-srodka/agent86)
 
 ## What this repo is for
