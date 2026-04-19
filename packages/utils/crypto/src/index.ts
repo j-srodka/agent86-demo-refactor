@@ -1,4 +1,6 @@
 /**
+ * **Demo fixture only — not real HMAC verification.** Do not use in production.
+ *
  * Verifies an HMAC signature over a canonical payload string.
  * Unrelated to user session authentication; name collides only at the identifier level.
  *
