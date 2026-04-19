@@ -8,6 +8,6 @@
     { "path": "./packages/services/order" },
     { "path": "./packages/services/payment" },
     { "path": "./packages/services/notification" },
-    { "path": "./packages/app" }
+    { "path": "./packages/services/app" }
   ]
 }

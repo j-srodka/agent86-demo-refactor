@@ -24,23 +24,23 @@ importers:
         specifier: ^8.21.0
         version: 8.58.2(eslint@9.39.4)(typescript@5.9.3)
 
-  packages/app:
+  packages/services/app:
     dependencies:
       '@demo/notification':
         specifier: workspace:*
-        version: link:../services/notification
+        version: link:../notification
       '@demo/order':
         specifier: workspace:*
-        version: link:../services/order
+        version: link:../order
       '@demo/payment':
         specifier: workspace:*
-        version: link:../services/payment
+        version: link:../payment
       '@demo/user':
         specifier: workspace:*
-        version: link:../services/user
+        version: link:../user
       '@demo/utils-auth':
         specifier: workspace:*
-        version: link:../utils/auth
+        version: link:../../utils/auth
 
   packages/services/notification:
     dependencies:

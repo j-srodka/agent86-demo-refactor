@@ -47,14 +47,11 @@ Use a running Agent86 MCP server with **`root_path`** set to an absolute path of
 
 7. Expect **`lang.ts.cross_file_rename_broad_match`** with **`evidence.found`** greater than **10** (this workspace aims for roughly **15–20** matches; if **`found`** is **10** or below, do not treat the scenario as validated).
 
-8. Narrow matches using **`path_prefix`** so **utils** and **testing** packages are excluded while **service** call sites and the **app** entry remain in scope. Because **`packages/app`** is not under **`packages/services/`**, run **`search_units`** twice and merge **`unit_refs`** (or use a host that unions results):
-
-   - **`path_prefix`:** `"packages/services/"` — covers **`user`**, **`order`**, **`payment`**, **`notification`** (three **`.authenticate`** call sites on **`UserService`** plus the **method** definition under **`user`**).
-   - **`path_prefix`:** `"packages/app/"` — covers the **fourth** **`UserService.authenticate`** call site in the application entry package.
+8. Narrow matches using **`path_prefix`:** **`"packages/services/"`**. That prefix covers **`user`**, **`order`**, **`payment`**, **`notification`**, and **`app`** (including the four **`UserService.authenticate`** call sites and the **method** definition under **`user`**), while excluding **`packages/utils/`** and **`packages/testing/`**.
 
    Use the same **`kind` / `name` / `enclosing_class`** filters as in step 5 when your adapter implements them for **`method`** search. If your server advertises **`kind: "reference"`** for **`search_units`**, you may use **`reference`** + **`path_prefix`** instead; the reference **`imported_from`** filter is **not** part of this demo.
 
-9. Build a new **`rename_symbol`** batch using **only** the narrowed **`unit_refs`**, **`apply_batch`** again, and expect **success** with **four** renamed **`UserService.authenticate`** sites (three under **`packages/services/`** and one under **`packages/app/`**).
+9. Build a new **`rename_symbol`** batch using **only** the narrowed **`unit_refs`**, **`apply_batch`** again, and expect **success** with **four** renamed **`UserService.authenticate`** sites (all under **`packages/services/`**, including **`packages/services/app/`**).
 
 ## Repro determinism
 
