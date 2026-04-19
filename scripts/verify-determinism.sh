@@ -9,7 +9,7 @@ cleanup() {
 trap cleanup EXIT
 
 run_build() {
-  find packages -type d -name dist -prune -exec rm -rf {} +
+  find packages -type d -name dist -exec rm -rf {} + 2>/dev/null || true
   pnpm exec tsc -b
 }
 
@@ -18,7 +18,9 @@ snapshot_tree() {
   mkdir -p "$dest"
   while IFS= read -r -d '' f; do
     rel="${f#"$ROOT"/}"
-    install -D -m 0644 "$f" "$dest/$rel"
+    local out="$dest/$rel"
+    mkdir -p "$(dirname "$out")"
+    cp "$f" "$out"
   done < <(find packages -path '*/dist/*' -type f -print0 | sort -z)
 }
 
