@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/services/user" },
+    { "path": "./packages/utils/auth" },
+    { "path": "./packages/utils/crypto" },
+    { "path": "./packages/testing/mocks" },
+    { "path": "./packages/services/order" },
+    { "path": "./packages/services/payment" },
+    { "path": "./packages/services/notification" },
+    { "path": "./packages/app" }
+  ]
+}
