@@ -6,13 +6,13 @@ Upstream project: [github.com/j-srodka/agent86](https://github.com/j-srodka/agen
 
 ## What this repo is for
 
-This repository is a **small, realistic-looking** workspace used in demos and recordings. It is **not** a standalone product: it exists so an editor agent can trigger a **`lang.ts.cross_file_rename_broad_match`** rejection on a broad `authenticate` rename, then recover by narrowing search with **`path_prefix`** so only the intended **`UserService.authenticate`** call sites remain.
+This repository is a **small, realistic-looking** workspace used in demos and recordings. It is **not** a standalone product: it exists so an editor agent can hit a **`lang.ts.cross_file_rename_broad_match`** **warning** on a broad `authenticate` rename (the batch can still **`outcome: success`**), read that signal, **undo** if needed, then recover by narrowing search with **`path_prefix`** so only the intended **`UserService.authenticate`** call sites remain.
 
 ## Scenarios covered
 
 | Version | Scenario |
 | ------- | -------- |
-| v1 | `cross_file_rename_broad_match` only (broad rename → narrow → succeed) |
+| v1 | `cross_file_rename_broad_match` warning (broad rename → undo / narrow → succeed) |
 
 ## How to reproduce the demo
 
@@ -26,6 +26,14 @@ Use a running Agent86 MCP server with **`root_path`** set to an absolute path of
    pnpm install
    pnpm run build
    ```
+
+   **Snapshot hygiene:** compiled output is gitignored and should not be included when materializing a workspace snapshot (it duplicates every logical unit under `dist/`). After `pnpm run build`, remove build artifacts before snapshotting:
+
+   ```bash
+   rm -rf packages/*/dist packages/*/*/dist
+   ```
+
+   (Alternatively, point each package’s `tsconfig` `outDir` at a single root-level `build/` tree that is gitignored.)
 
 2. Install and launch the Agent86 MCP server per [its README](https://github.com/j-srodka/agent86).
 
@@ -45,7 +53,7 @@ Use a running Agent86 MCP server with **`root_path`** set to an absolute path of
 
 6. Build a **`rename_symbol`** op with **`cross_file: true`** targeting the returned method **`target_id`**, and **`apply_batch`**.
 
-7. Expect **`lang.ts.cross_file_rename_broad_match`** with **`evidence.found`** greater than **10** (this workspace aims for roughly **15–20** matches; if **`found`** is **10** or below, do not treat the scenario as validated).
+7. Expect **`lang.ts.cross_file_rename_broad_match`** as a **warning** (not a batch rejection) with **`evidence.found`** greater than **10** (this workspace aims for roughly **15–20** matches when only `src/` is snapshotted; if **`found`** is **10** or below, do not treat the scenario as validated). The rename may still report **`outcome: success`**; the demo shows the agent noticing the warning and choosing to **undo** and **narrow** rather than treating the result as safe by default.
 
 8. Narrow matches using **`path_prefix`:** **`"packages/services/"`**. That prefix covers **`user`**, **`order`**, **`payment`**, **`notification`**, and **`app`** (including the four **`UserService.authenticate`** call sites and the **method** definition under **`user`**), while excluding **`packages/utils/`** and **`packages/testing/`**.
 

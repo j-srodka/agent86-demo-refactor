@@ -16,3 +16,8 @@ export function authenticate(
   }
   return { token: `mock_${principalId}`, expiresAtEpochMs: 0 };
 }
+
+/** Shared test setup: returns a token issued through the mock issuer. */
+export function createAuthenticatedContext(principalId: string, options: MockAuthOptions = {}): SessionToken {
+  return authenticate(principalId, options);
+}

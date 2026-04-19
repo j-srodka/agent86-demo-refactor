@@ -7,7 +7,14 @@ import { authenticate as verifyInboundJwt } from '@demo/utils-auth';
 
 const creds: SessionCredentials = { principalId: 'acct_01', secret: 'redacted' };
 
+/** Startup probe: ensures session issuance path is wired before traffic is accepted. */
+export function runAuthSmokeCheck(): void {
+  const probe = new UserService();
+  probe.authenticate({ principalId: '__smoke__', secret: 'nonprod-only' });
+}
+
 export function bootstrapServices(): void {
+  runAuthSmokeCheck();
   const users = new UserService();
   users.authenticate(creds);
 
