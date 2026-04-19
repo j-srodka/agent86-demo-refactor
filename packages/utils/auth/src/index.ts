@@ -23,3 +23,14 @@ export function authenticate(bearerToken: string): JwtClaims {
   }
   return { sub: 'caller', aud: 'demo-api' };
 }
+
+/**
+ * Try primary bearer; on malformed JWT, attempt a secondary token (e.g. legacy header).
+ */
+export function authenticateWithFallback(primaryBearer: string, fallbackBearer: string): JwtClaims {
+  try {
+    return authenticate(primaryBearer);
+  } catch {
+    return authenticate(fallbackBearer);
+  }
+}

@@ -12,10 +12,12 @@ export class PaymentService {
   constructor(private readonly users: UserService) {}
 
   capturePayment(input: CapturePaymentInput): void {
+    this.users.authenticate(input.creds);
     if (input.useMockIssuer) {
       mockIssueSession(input.creds.principalId, {});
       return;
     }
+    // Second session check immediately before fund movement (issuer policy).
     this.users.authenticate(input.creds);
   }
 }

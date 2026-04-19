@@ -15,4 +15,11 @@ export class NotificationService {
     this.users.authenticate(input.creds);
     verifyBearer(`Bearer ${input.deviceToken}`);
   }
+
+  /** High-sensitivity fan-out: verify the operator, then the subscriber channel identity. */
+  sendSecureNotification(input: DispatchNotificationInput, operatorCreds: SessionCredentials): void {
+    this.users.authenticate(operatorCreds);
+    this.users.authenticate(input.creds);
+    verifyBearer(`Bearer ${input.deviceToken}`);
+  }
 }
