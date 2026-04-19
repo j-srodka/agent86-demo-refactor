@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../services/user" },
+    { "path": "../utils/auth" },
+    { "path": "../services/order" },
+    { "path": "../services/payment" },
+    { "path": "../services/notification" }
+  ]
+}
